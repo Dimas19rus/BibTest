@@ -34,7 +34,14 @@
                     }
                     else
                     {
-                        <a asp-controller="RequestOfRentalBooks" asp-action="CreateOfDetailBook" asp-route-bookid="@Model.BookId" class="btn btn-warning">Подать запрос на получение книги</a>
+                        if (!Model.IsRequestBook)
+                        {
+                            <a asp-controller="RequestOfRentalBooks" asp-action="CreateOfDetailBook" asp-route-bookid="@Model.BookId" class="btn btn-warning">Подать запрос на получение книги</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-warning disabled" >Запрос на книгу уже подан</a>
+                        }
                     }
                 }
             </div>
