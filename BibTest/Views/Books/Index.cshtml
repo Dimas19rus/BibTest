@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Список книг";
+}
+
+@model BooksModel
+
+<link rel="stylesheet" href="~/css/books.css" />
+<main class="container-xxl flex-shrink-0">
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                @await Html.PartialAsync("NoticeElement", @Model.Notice)
+                <div class="col-md-3">
+                    <div class="container">
+                        <div class="row">
+                            <form asp-action="Index" asp-controller="Books" class="d-flex">
+                                <input asp-for="SearchTextTitle" class="form-control me-2" type="search" placeholder="Название книги">
+                                <button class="btn btn-outline-success" type="submit">Поиск</button>
+                            </form>
+                        </div>
+                        <div class="row">
+                            @foreach (Author a in Model.Authors)
+                            {
+                                <a style="text-decoration: none;" asp-controller="Books" asp-action="AuthorsBooks" asp-route-authorId="@a.Id" asp-route-authorFio="@a.Surname @a.Name @a.Patronymic">
+                                    @a.Surname @a.Name @a.Patronymic
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    @if (Model.SearchTextTitle != "")
+                    {
+                        <h4>Результат поиска: @Model.SearchTextTitle</h4>
+                    }
+                    @if (Model.SearchTextAuthor != "")
+                    {
+                        <h4>@Model.SearchTextAuthor</h4>
+                    }
+
+                    @if (Model.Books is not null && Model.Books.Count() != 0)
+                    {
+                        @await Html.PartialAsync("PartialView/BooksList", Model.Books)
+                    }
+                    else
+                    {
+                        <h3>Книги отсутсвуют</h3>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>

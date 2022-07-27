@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Book>
+
+    @foreach (Book b in Model)
+    {
+        <div class="row mb-2">
+            <div class="col-md-12">
+                <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col-auto d-none d-lg-block">
+                        <a asp-controller="Books" asp-action="Details" asp-route-bookId="@b.Id">
+                            <img class="bd-placeholder-img" width="200" src="@Url.Content(b.PathBookCover)" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"/>
+                        </a>
+                        </div>
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <a asp-controller="Books" style="text-decoration: none;" asp-action="Details" asp-route-bookId="@b.Id">
+                            <h3 class="mb-0">@b.Title</h3>
+                        </a>
+                        <div class="mb-1 text-muted">
+                            <a class="link-info" asp-controller="Books" asp-action="AuthorsBooks" asp-route-authorId="@b.AuthorId" asp-route-authorFio="@b.Author.Surname @b.Author.Name @b.Author.Patronymic">
+                                @b.Author.Surname @b.Author.Name @b.Author.Patronymic
+                            </a>
+                        </div>
+                        <button class="btn btn-primary btn-sm" style="width: 200px" data-bs-toggle="collapse" href="#description_@b.Id" role="button" aria-expanded="false" aria-controls="description_@b.Id">Раскрыть описание</button>
+                        <div class="collapse" id="description_@b.Id">
+                            <div class="card card-body">
+                                @b.Description
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    }

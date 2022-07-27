@@ -1,0 +1,43 @@
+﻿@model DetailsBookModel
+@{
+    ViewData["Title"] = @Model.Title;
+}
+<link rel="stylesheet" href="~/css/books.css" />
+<main class="container-xxl flex-shrink-0">
+    <div class="container">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative">
+            @await Html.PartialAsync("NoticeElement", @Model.Notice)
+            <div class="col-auto d-none d-lg-block">
+                <img class="bd-placeholder-img" width="200" src="@Url.Content(Model.PathBookCover)" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"/>
+            </div>
+            <div class="col p-4 d-flex flex-column position-static">
+                <h3 class="mb-0">@Model.Title</h3>
+                <div class="mb-1 text-muted">
+                    <a asp-controller="Books" asp-action="AuthorsBooks" asp-route-authorId="@Model.AuthorId" asp-route-authorFio="@Model.AuthorName">
+                        @Model.AuthorName
+                    </a>
+                </div>
+
+                <div class="card card-body">
+                    @Model.Description
+                </div>
+                @if (this.User.IsInRole("Библиотекарь"))
+                {
+                    <a asp-controller="Books" asp-action="DownloadBookData" asp-route-path="@Model.PathBookData" class="btn btn-success">Скачать книгу</a>
+                }
+
+                @if (this.User.IsInRole("Читатель"))
+                {
+                    @if (Model.IsThereBook)
+                    {
+                        <a asp-controller="Books" asp-action="DownloadBookData" asp-route-path="@Model.PathBookData" class="btn btn-success">Скачать книгу</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="RequestOfRentalBooks" asp-action="CreateOfDetailBook" asp-route-bookid="@Model.BookId" class="btn btn-warning">Подать запрос на получение книги</a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</main>

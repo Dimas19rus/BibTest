@@ -1,0 +1,80 @@
+﻿@model RentalBooksModel
+
+@if (Model.RentalBooks.Any())
+        {
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Название книги</th>
+                        <th scope="col">Кто взял</th>
+                        <th scope="col">Дата выдачи</th>
+                        <th scope="col">До</th>
+                        <th scope="col">Статус</th>
+                        <th scope="col">Вернул</th>
+                        <th scope="col">Функции</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int k = 1;
+                    }
+                    @foreach (var d in Model.RentalBooks)
+                    {
+                        string classTr = "table-warning";
+                        @if (DateTime.Compare(d.DateRentalBefore, DateTime.Now) < 0)
+                            classTr = "table-danger";
+                        @if (@d.DateReturn is not null)
+                            classTr = "table-success";
+
+                        <tr class="@classTr">
+                            <th scope="row">@k</th>
+                            <td>@d.Book.Title</td>
+                            <td>@d.PersonalData.Surname @d.PersonalData.Name</td>
+                            <td>@d.DateRental</td>
+                            <td>@d.DateRentalBefore</td>
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" checked="@(d.DateReturn != null)" disabled>
+                                </div>
+                            </td>
+                            <td>@d.DateReturn</td>
+                            <td>
+                                <div class="container">
+                                    <div class="row">
+                                        @if (User.IsInRole("Библиотекарь"))
+                                        {
+                                            <div class="col-auto">
+                                                <form asp-controller="RentalBooks" asp-action="Delete" asp-route-id="@d.Id" asp-route-searchText="@Model.SearchText" onclick="return confirm('Вы точно уверенный что хотите удалить запись №@k?')">
+                                                    <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                                                </form>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a class="btn btn-warning btn-sm" asp-controller="RentalBooks" asp-action="Edit" asp-route-id="@d.Id" asp-route-searchText="@Model.SearchText">
+                                                    Изменить
+                                                </a>
+                                            </div>
+                                        }
+                                        @if (d.DateReturn == null)
+                                        {
+                                            <div class="col-auto">
+                                                <a class="btn btn-primary btn-sm" asp-controller="RentalBooks" asp-action="ReternBook" asp-route-id="@d.Id" asp-route-searchText="@Model.SearchText">
+                                                    Вернуть
+                                                </a>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                            </td>
+
+                        </tr>
+                        k++;
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <h3>Нету выданных книг</h3>
+        }

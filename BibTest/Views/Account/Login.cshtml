@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Вход";
+}
+
+@model BibTest.Models.Account.LoginModel
+
+<link rel="stylesheet" href="~/css/account.css" />
+
+<main class="form-account m-auto">
+    <h2 class="text-center">Вход</h2>
+    <form asp-action="Login" asp-controller="Account" asp-anti-forgery="true">
+                <div>
+            <div class="form-floating">
+                <input asp-for="Login" class="form-control" id="Login" placeholder="Login" />
+                <label asp-for="Login" for="Login">Введите логин</label>
+                <span asp-validation-for="Login" />
+            </div>
+            <div class="form-floating">
+                <input asp-for="Password" class="form-control" id="Password" placeholder="Password" />
+                <label asp-for="Password" for="Password">Введите пароль</label>
+                <span asp-validation-for="Password" />
+            </div>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Войти</button>
+            <div asp-validation-summary="All"></div>
+        </div>
+    </form>
+</main>

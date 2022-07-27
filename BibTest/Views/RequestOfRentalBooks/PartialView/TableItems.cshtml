@@ -1,0 +1,106 @@
+﻿@model RequestOfRentalBooksModel
+
+@if (Model.RequestOfRentalBooks.Any())
+{
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th scope="col">#</th>
+                @if (this.User.IsInRole("Библиотекарь"))
+                {
+                    <th scope="col">Читатетль</th>
+                }
+                <th scope="col">Название книги</th>
+                <th scope="col">Дата запроса</th>
+                <th scope="col">Статус</th>
+                <th scope="col">Функции</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int k = 1;
+
+            }
+            @foreach (var d in Model.RequestOfRentalBooks)
+            {
+                string classTr = "table-warning";
+                @if (@d.IsAllowed == true)
+                    classTr = "table-success";
+                @if (@d.IsAllowed == false)
+                    classTr = "table-danger";
+
+                <tr class="@classTr">
+                    <th scope="row">@k</th>
+                    @if (this.User.IsInRole("Библиотекарь"))
+                    {
+                        <td>@d.PersonalData.Surname @d.PersonalData.Name</td>
+                    }
+                    <td>@d.Book.Title</td>
+                    <td>@d.DateOfCreation</td>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" checked="@d.IsAllowed" disabled>
+                        </div>
+                    </td>
+                    <td>
+                        @if (this.User.IsInRole("Читатель"))
+                        {
+                            @if (d.IsAllowed is null)
+                            {
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <form asp-controller="RequestOfRentalBooks" asp-action="DeleteReader" asp-route-id="@d.Id" asp-route-searchText="@Model.SearchText" onclick="return confirm('Вы точно уверенный что хотите отменить запрос №@k?')">
+                                                <button type="submit" class="btn btn-danger btn-sm">Отменить</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        @if (this.User.IsInRole("Библиотекарь"))
+                        {
+                            @if (d.IsAllowed is not null)
+                            {
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <form asp-controller="RequestOfRentalBooks" asp-action="DeleteLibrarian" asp-route-id="@d.Id" asp-route-searchText="@Model.SearchText" onclick="return confirm('Вы точно уверенный что хотите отменить запрос №@k?')">
+                                                <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        @if (this.User.IsInRole("Библиотекарь"))
+                        {
+                            @if (d.IsAllowed is null)
+                            {
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <form asp-controller="RequestOfRentalBooks" asp-action="Allowed" asp-route-id="@d.Id" asp-route-isAllowed="@true" asp-route-searchText="@Model.SearchText">
+                                                <button type="submit" class="btn btn-success btn-sm">Разрешить</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-auto">
+                                            <form asp-controller="RequestOfRentalBooks" asp-action="Allowed" asp-route-id="@d.Id" asp-route-isAllowed="@false" asp-route-searchText="@Model.SearchText">
+                                                <button type="submit" class="btn btn-danger btn-sm">Отказать</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </td>
+                </tr>
+                k++;
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h3>Нету заявок</h3>
+}

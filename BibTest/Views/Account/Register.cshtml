@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Регистрация пользователя";
+}
+
+@model BibTest.Models.Account.RegisterModel
+
+<link rel="stylesheet" href="~/css/account.css" />
+
+<main class="form-account w-100 m-auto">
+    <h2 class="text-center">Регистрация</h2>
+    <form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
+        <div>
+            <div class="form-floating">
+                <input asp-for="Login" class="form-control" id="Login" placeholder="Login"/>
+                <label asp-for="Login" for="Login">Логин *</label>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Password" class="form-control" id="Password" placeholder="Password" />
+                <label asp-for="Password" for="Password">Пароль *</label>
+            </div>
+            <div class="form-floating">
+                <input asp-for="ConfirmPassword" class="form-control" id="ConfirmPassword" placeholder="ConfirmPassword"/>
+                <label asp-for="ConfirmPassword" for="ConfirmPassword">Повторите пароль *</label>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Name" class="form-control" id="Name" placeholder="Name"/>
+                <label asp-for="Name" for="Name">Имя *</label>
+            </div>
+            <div class="form-floating">
+                <input asp-for="Surname" class="form-control" id="Surname" placeholder="Surname"/>
+                <label asp-for="Surname" for="Surname">Фамилия *</label>
+            </div>
+            <div class="form-floating">
+                <select class="form-control form-select" aria-label="form-select-lg example" asp-for="RoleId" asp-items="@(new SelectList(Model.Roles, nameof(Role.Id), nameof(Role.Name)))"></select>
+                <label asp-for="RoleId" for="RoleId">Роль *</label>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Зарегистрироваться</button>
+            <div  asp-validation-summary="All" ></div>
+        </div>
+    </form>
+</main>
+

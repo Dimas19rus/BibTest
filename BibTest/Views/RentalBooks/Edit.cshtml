@@ -1,0 +1,35 @@
+﻿@model DetailsRentalBook
+@{
+    ViewData["Title"] = "Изменение записи";
+}
+
+<link rel="stylesheet" href="~/css/books.css" />
+<main class="container-xxl flex-shrink-0">
+    <div class="container">
+        <form  asp-action="Edit" asp-controller="RentalBooks">
+            <div class="mb-3">
+                <label asp-for="PersanalDataId" >Читатель *</label>
+                <select class="form-control form-select" aria-label="form-select-lg example" asp-for="PersanalDataId" asp-items="@Model.PersonalData"></select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="BookId" >Книга *</label>
+                <select class="form-control form-select" aria-label="form-select-lg example" asp-for="BookId" asp-items="@Model.Books"></select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DateRental" >Дата выдачи *</label>
+                <input asp-for="DateRental" type="date" class="form-control" >
+            </div>
+            <div class="mb-3">
+                <label asp-for="DateRentalBefore" >Выдана до *</label>
+                <input asp-for="DateRentalBefore" type="date" class="form-control" >
+            </div>
+            <div class="mb-3">
+                <label asp-for="DateReturn" >Дата когда вернули</label>
+                <input asp-for="DateReturn" type="date" class="form-control" >
+            </div>
+
+            <button type="submit" class="btn btn-success">Сохранить</button>
+            <div asp-validation-summary="All"></div>
+        </form>
+    </div>
+</main>

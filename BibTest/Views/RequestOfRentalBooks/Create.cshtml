@@ -1,0 +1,18 @@
+﻿@model CreateRequestOfRentalBook
+@{
+    ViewData["Title"] = "Запрос на книгу";
+}
+
+<link rel="stylesheet" href="~/css/books.css" />
+<main class="container-xxl flex-shrink-0">
+    <div class="container">
+        <form  asp-action="Create" asp-controller="RequestOfRentalBooks" asp-anti-forgery="true">
+            <div class="mb-3">
+                <label asp-for="BookId" >Книга *</label>
+                <select class="form-control form-select" aria-label="form-select-lg example" asp-for="BookId" asp-items="@Model.Books"></select>
+            </div>
+            <button type="submit" class="btn btn-success">Запросить книгу</button>
+            <div asp-validation-summary="ModelOnly"></div>
+        </form>
+    </div>
+</main>

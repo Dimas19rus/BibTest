@@ -1,0 +1,45 @@
+﻿@model RequestOfRentalBooksModel
+@{
+    ViewData["Title"] = "Список запросов";
+}
+
+<link rel="stylesheet" href="~/css/books.css" />
+<main class="container-xxl flex-shrink-0">
+    <div class="container">
+        @await Html.PartialAsync("NoticeElement", Model.Notice)
+        <div class="row">
+            <div class="col">
+                @{
+                    string searchTextDefault = "";
+                    if (User.IsInRole("Библиотекарь"))
+                    {
+                        searchTextDefault = "Фамилия, имя читателя...";
+                    }
+                    else
+                    {
+                        searchTextDefault = "Название книги...";
+                    }
+                }
+                <form asp-action="Index" asp-controller="RequestOfRentalBooks" asp-route-searchText="@Model.SearchText" class="d-flex">
+                    <input asp-for="SearchText" class="form-control me-2" type="search" placeholder="@searchTextDefault">
+                    <button class="btn btn-outline-success" type="submit">Поиск</button>
+                </form>
+            </div>
+            @if (User.IsInRole("Читатель"))
+            {
+                <div class="col-auto align-self-end">
+                    <a class="btn btn-success mb-3" asp-controller="RequestOfRentalBooks" asp-action="Create">
+                        Запросить книгу
+                    </a>
+                </div>
+            }
+        </div>
+
+        @if (Model.SearchText != null && Model.SearchText != "")
+        {
+            <h2>Результат поиска: @Model.SearchText </h2>
+        }
+        @await Html.PartialAsync("PartialView/TableItems", Model)
+
+    </div>
+</main>
